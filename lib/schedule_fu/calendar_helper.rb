@@ -3,16 +3,16 @@ require 'date'
 # CalendarHelper allows you to draw a databound calendar with fine-grained CSS formatting
 module ScheduleFu
   module CalendarHelper
-  
+
     # Returns an HTML calendar. In its simplest form, this method generates a plain
     # calendar (which can then be customized using CSS) for a given month and year.
     # However, this may be customized in a variety of ways -- changing the default CSS
     # classes, generating the individual day entries yourself, and so on.
-    # 
+    #
     # The following options are required:
     #  :year  # The  year number to show the calendar for.
     #  :month # The month number to show the calendar for.
-    # 
+    #
     # The following are optional, available for customizing the default behaviour:
     #   :table_class       => "calendar"        # The class for the <table> tag.
     #   :month_name_class  => "monthName"       # The class for the name of the month, at the top of the table.
@@ -25,13 +25,13 @@ module ScheduleFu
     #                                             (0..-1) for the entire name.
     #   :first_day_of_week => 0                 # Renders calendar starting on Sunday. Use 1 for Monday, and so on.
     #   :accessible        => true              # Turns on accessibility mode. This suffixes dates within the
-    #                                           # calendar that are outside the range defined in the <caption> with 
+    #                                           # calendar that are outside the range defined in the <caption> with
     #                                           # <span class="hidden"> MonthName</span>
     #                                           # Defaults to false.
-    #                                           # You'll need to define an appropriate style in order to make this disappear. 
+    #                                           # You'll need to define an appropriate style in order to make this disappear.
     #                                           # Choose your own method of hiding content appropriately.
     #
-    #   :show_today        => false             # Highlights today on the calendar using the CSS class 'today'. 
+    #   :show_today        => false             # Highlights today on the calendar using the CSS class 'today'.
     #                                           # Defaults to true.
     #   :previous_month_text   => nil           # Displayed left of the month name if set
     #   :next_month_text   => nil               # Displayed right of the month name if set
@@ -44,7 +44,7 @@ module ScheduleFu
     # (this can be used to change the <td>'s class for customization with CSS).
     # This block can also return the cell_text only, in which case the <td>'s class defaults to the value given in
     # +:day_class+. If the block returns nil, the default options are used.
-    # 
+    #
     # Example usage:
     #   calendar(:year => 2005, :month => 6) # This generates the simplest possible calendar.
     #   calendar({:year => 2005, :month => 6, :table_class => "calendar_helper"}) # This generates a calendar, as
@@ -61,32 +61,32 @@ module ScheduleFu
     #     end
     #   end
     #
-    # An additional 'weekend' class is applied to weekend days. 
+    # An additional 'weekend' class is applied to weekend days.
     #
     # For consistency with the themes provided in the calendar_styles generator, use "specialDay" as the CSS class for marked days.
-    # 
+    #
     def calendar(options = {}, &block)
       raise(ArgumentError, "No year given")  unless options.has_key?(:year)
       raise(ArgumentError, "No month given") unless options.has_key?(:month)
-  
+
       block ||= Proc.new {|d| nil}
-  
+
       options = defaults(options).merge(options)
       vars = setup_variables(options)
-      
-      content_tag(:table, :class => options[:table_class], :border => 0, 
+
+      content_tag(:table, :class => options[:table_class], :border => 0,
           :cellspacing => 0, :cellpadding => 0) do
         text = calendar_head(options, vars).html_safe
         text << calendar_body(options, vars, &block).html_safe
       end
     end
-    
+
     private
-    
+
     def first_day_of_week(day)
       day
     end
-    
+
     def last_day_of_week(day)
       if day > 0
         day - 1
@@ -94,7 +94,7 @@ module ScheduleFu
         6
       end
     end
-    
+
     def days_between(first, second)
       if first > second
         second + (7 - first)
@@ -102,18 +102,18 @@ module ScheduleFu
         second - first
       end
     end
-    
+
     def beginning_of_week(date, start = 1)
       days_to_beg = days_between(start, date.wday)
       date - days_to_beg
     end
-    
+
     def weekend?(date)
       [0, 6].include?(date.wday)
     end
-    
+
     def defaults(options)
-      { 
+      {
         :table_class => 'calendar',
         :month_name_class => 'monthName',
         :other_month_class => 'otherMonth',
@@ -129,22 +129,22 @@ module ScheduleFu
         :display_year => options[:year]
       }
     end
-    
+
     def setup_variables(options)
       vars = {}
       vars[:first] = Date.civil(options[:year], options[:month], 1)
       vars[:last] = Date.civil(options[:year], options[:month], -1)
-  
+
       vars[:first_weekday] = first_day_of_week(options[:first_day_of_week])
       vars[:last_weekday] = last_day_of_week(options[:first_day_of_week])
       vars
     end
-    
+
     def calendar_head(options, vars)
       content_tag(:thead) do
         contents = content_tag(:tr) do
           text = "".html_safe
-          text << content_tag(:th, :colspan => determine_colspan(text, options), 
+          text << content_tag(:th, :colspan => determine_colspan(text, options),
               :class => options[:month_name_class]) do
             "#{options[:month_name_array][options[:month]]} #{options[:display_year]}"
           end
@@ -156,7 +156,7 @@ module ScheduleFu
         end
       end
     end
-    
+
     def add_day_names(options, vars)
       text = "".html_safe
       day_names(vars[:first_weekday]).each do |d|
@@ -170,7 +170,7 @@ module ScheduleFu
       end
       text
     end
-    
+
     def day_names(first_weekday)
       day_names = Date::DAYNAMES.dup
       first_weekday.times do
@@ -178,7 +178,7 @@ module ScheduleFu
       end
       day_names
     end
-    
+
     def determine_colspan(contents, options)
       if options[:previous_month_text] || options[:next_month_text]
         contents << content_tag(:th, :colspan => 2) do
@@ -189,7 +189,7 @@ module ScheduleFu
         7
       end
     end
-    
+
     def calendar_body(options, vars, &block)
       content_tag(:tbody) do
         content_tag(:tr) do
@@ -199,7 +199,7 @@ module ScheduleFu
         end
       end
     end
-    
+
     def fill_days_last_month(options, first, first_weekday, &block)
       text = "".html_safe
       beginning_of_week(first, first_weekday).upto(first - 1) do |d|
@@ -207,7 +207,7 @@ module ScheduleFu
       end unless first.wday == first_weekday
       text
     end
-    
+
     def fill_days_this_month(options, first, last, last_weekday, &block)
       text = "".html_safe
       first.upto(last) do |d|
@@ -216,7 +216,7 @@ module ScheduleFu
       end
       text
     end
-    
+
     def fill_days_next_month(options, last, first_weekday, last_weekday, &block)
       text = "".html_safe
       (last + 1).upto(beginning_of_week(last + 7, first_weekday) - 1)  do |d|
@@ -224,13 +224,13 @@ module ScheduleFu
       end unless last.wday == last_weekday
       text
     end
-    
+
     def fill_day(d, options = nil, current = false, &block)
       cell_text, cell_attrs = block.call(d)
       cell_text  ||= d.mday
       cell_attrs ||= {}
       cell_attrs[:class] ||= options[:day_class]
-      cell_attrs[:class] += " weekendDay" if weekend?(d) 
+      cell_attrs[:class] += " weekendDay" if weekend?(d)
       cell_attrs[:class] += " today" if (d == Date.today) && options[:show_today]
       content_tag(:td, cell_attrs) do
         text = cell_text
@@ -238,9 +238,9 @@ module ScheduleFu
         text
       end
     end
-    
+
     def accessible_text(options)
-      options[:accessible] ? 
+      options[:accessible] ?
           "<span class='hidden'> #{options[:month_name_array][d.mon]}</span>" : ""
     end
   end

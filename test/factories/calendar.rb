@@ -1,5 +1,5 @@
 FactoryGirl.define do
   factory :calendar do
-    desc 'Test calendar'  
+    desc 'Test calendar'
   end
 end

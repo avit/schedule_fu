@@ -7,7 +7,7 @@ Bundler.setup
 require 'rails'
 require 'active_support/time'
 require "rails/test_help"
-require 'test/unit' 
+require 'test/unit'
 require 'shoulda'
 require 'schedule_fu'
 require 'factory_girl_rails'

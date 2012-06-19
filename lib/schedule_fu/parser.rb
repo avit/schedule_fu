@@ -18,7 +18,7 @@ module ScheduleFu
         args.map {|arg| parse(arg) }
       end
     end
-  
+
     def parse_date(string)
       unless string.nil?
         begin
@@ -26,13 +26,13 @@ module ScheduleFu
         rescue; end
       end
     end
-  
+
     def parse_dates(string)
       parse_recurring_dates(string) || parse_specific_dates(string)
     end
-  
+
     private
-  
+
     def parse_specific_dates(value)
       if (parts = value.split('-')).length == 2
         first = parse_date(parts[0])
@@ -49,7 +49,7 @@ module ScheduleFu
         return date
       end
     end
-  
+
     # Parses the given value for repeating date strings of the form:
     #
     # * Saturdays
@@ -78,7 +78,7 @@ module ScheduleFu
       end
       {:weekday => weekday, :monthweek => monthweek }
     end
-  
+
     # Returns the monthweek integer value of the given string, e.g.
     # first -> 0. It ignores case, and allows both full and abbreviated
     # ordinal number names, as well as the special name 'last'. If unable

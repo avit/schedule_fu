@@ -1,7 +1,7 @@
 module ScheduleFu
   module Finder
     include ScheduleFu::Parser
-    
+
     def conditions_for_date_finders(*args)
       dates = parse(*args)
       case dates

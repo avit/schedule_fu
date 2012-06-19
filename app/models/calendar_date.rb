@@ -1,7 +1,7 @@
 require 'set'
 class CalendarDate < ActiveRecord::Base
   extend ScheduleFu::Finder
-  
+
   has_many :event_dates, :class_name=>'CalendarEventDate', :readonly => true
   has_many :events, :through => :event_dates
 
@@ -15,11 +15,11 @@ class CalendarDate < ActiveRecord::Base
 
   scope :by_dates, lambda {|*args| {:conditions => conditions_for_date_finders(*args)}}
   scope :by_values, lambda{|*args| {:conditions => ["value in (?)", args]}}
-  
+
   def self.find_by_value(value)
     find(:first, :conditions => { :value => value })
   end
-  
+
   def self.create_for_dates(start_date = nil, end_date = nil)
     start_date ||= Date.today
     end_date ||= 5.years.since(start_date)
@@ -38,7 +38,7 @@ class CalendarDate < ActiveRecord::Base
   end
 
   @@create_lock = Mutex.new
-  
+
   def self.get_and_create_dates(range)
     range = range.first.to_date..range.last.to_date
     dates = self.by_dates(range)
@@ -55,7 +55,7 @@ class CalendarDate < ActiveRecord::Base
     end
     dates
   end
-  
+
   private
 
   def derive_date_parts
