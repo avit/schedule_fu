@@ -22,6 +22,7 @@ and calendar_helper (http://github.com/topfunky/calendar_helper).}
   s.add_dependency "rails", ">= 3.2.0"
   s.add_dependency "mysql2"
   s.add_dependency "rack"
+  s.add_dependency "rails_sql_views"
 
   s.add_development_dependency "jquery-rails"
   s.add_development_dependency "factory_girl", "~> 2.5.0"

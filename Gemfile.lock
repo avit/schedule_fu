@@ -1,3 +1,10 @@
+GIT
+  remote: https://github.com/avit/rails_sql_views.git
+  revision: d4e68babfa42629f802d79f344d93768d5710947
+  specs:
+    rails_sql_views (0.8.0)
+      activerecord
+
 PATH
   remote: .
   specs:
@@ -5,6 +12,7 @@ PATH
       mysql2
       rack
       rails (>= 3.2.0)
+      rails_sql_views
 
 GEM
   remote: http://rubygems.org/
@@ -103,5 +111,6 @@ DEPENDENCIES
   factory_girl (~> 2.5.0)
   factory_girl_rails (~> 1.6.0)
   jquery-rails
+  rails_sql_views!
   schedule_fu!
   shoulda (~> 2.11.3)

@@ -77,8 +77,7 @@ class AddScheduleFuTables < ActiveRecord::Migration
       )
     END_SQL
 
-    execute <<-END_SQL
-      CREATE VIEW calendar_event_dates AS
+    create_view :calendar_event_dates, <<-END_SQL do |v|
       SELECT
         ce.id
           AS calendar_event_id,
@@ -147,12 +146,25 @@ class AddScheduleFuTables < ActiveRecord::Migration
             )
           )
         );
-    END_SQL
+      END_SQL
+      v.column :calendar_event_id
+      v.column :calendar_date_id
+      v.column :calendar_event_mod_id
+      v.column :date_value
+      v.column :start_time
+      v.column :end_time
+      v.column :desc
+      v.column :long_desc
+      v.column :added
+      v.column :removed
+      v.column :modified
+    end
   end
 
   def self.down
-    execute "DROP VIEW calendar_event_dates"
+    drop_view :calendar_event_dates
     drop_table :calendar_recurrences
+    remove_index "calendar_event_mods_for_event_and_date"
     drop_table :calendar_event_mods
     drop_table :calendar_events
     drop_table :calendar_event_types
