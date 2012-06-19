@@ -61,7 +61,7 @@ module ScheduleFu
     # is the index of the day in the Date::DAYNAMES array (0-based) and the
     # monthweek is either nil, an integer, or an array of integers,
     # corresponding to the offset of the week(s) of the month.
-    def parse_weekly_dates(value)
+    def parse_recurring_dates(value)
       # FIXME repeats data from monthweek. we should probably get a more
       # robust parser going here
       unless md = /^\s*(?:Every )?\s*(1st|2nd|3rd|4th|last|first|second|third|fourth)?(?:\s*(?:and|&)\s*(1st|2nd|3rd|4th|last|first|second|third|fourth))?\s*((?:Sun|Mon|Tues|Wednes|Thurs|Fri|Satur)day)s?\s*(?:of each month|of the month|every month)?\s*$/i.match(value)
